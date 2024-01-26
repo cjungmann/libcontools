@@ -1,0 +1,87 @@
+.so fork.tmac
+.SH KEYS ADVICE
+.PP
+The
+.B get_keystroke
+function is great for returning keystroke strings resulting from a
+user's input, but knowing how to interpret the keystroke string is
+not obvious.
+In particular, numpad keys emit different keystroke strings
+depending on the keypad transmit mode.
+Sometimes the keyboard returns a number, other times a movement
+keystroke string.
+.PP
+The terminfo database includes records that relate the key and the
+string it generates.
+Here is a movement keys subset of the full list:
+.PP
+.TS
+tab(|);
+lb lb
+l lx.
+description|capname
+_
+left arrow key|kcub1
+right arrow key|kcuf1
+up arrow key|kcuu1
+down arrow key|kcud1
+page up key|kpp
+page down key|knp
+home key|khome
+end key|kend
+.TE
+.PP
+There is a comprehensive list of termcap names found in
+.BR terminfo (5),
+.SS KEYSTROKE EXAMPLE
+.PP
+To find out what keystroke string will currently be returned for a
+down arrow key, use the
+.B get_termcap_by_name
+function:
+.IP
+.EX
+// Obtain the keystroke string for the down-arrow key:
+const char *dnarrow;
+if (!get_termcap_by_name(&dnarrow, \(dqkcud1\(dq))
+   exit(1);
+
+// Get a user input
+const char *keystroke = get_keystroke(NULL,0);
+
+// Identify the key struck
+if (strcmp(dnarrow, keystroke)==0)
+   printf(\(dqYou struck the down-arrow key.\(rsn\(dq);
+.EE
+.SS DETECT CONTROL, ALT, and SHIFT
+.PP
+The keystroke emitted by
+.B get_keystroke
+is altered by the mode keys,
+.BR shift ", " control ", and " alt:
+.TS
+tab(|);
+lb lb lb lb lb
+l l l l l.
+key|raw|shift|control|alt
+up arrow|\(rsEOA|\(rsE[1;2A|\(rsE[1;5A|\(rsE[1;3A
+down arrow|\(rsEOB|\(rsE[1;2B|\(rsE[1;5B|\(rsE[1;3B
+right arrow|\(rsEOC|\(rsE[1;2C|\(rsE[1;5C|\(rsE[1;3C
+left arrow|\(rsEOD|\(rsE[1;2D|\(rsE[1;5D|\(rsE[1;3D
+page up|\(rsE[5~|--|\(rsE[5;5~|\(rsE[5;3~
+page down|\(rsE[6~|--|\(rsE[6;5~|\(rsE[6;3~
+_
+home key|\(rsEOH|--|\(rsE[1;5H|\(rsE[1;3H
+end key|\(rsEOF|--|\(rsE[1;5F|\(rsE[1;3F
+insert|\(rsE[2~|--|--|\(rsE[2;3~
+delete|\(rsE[3~|\(rsE[3;2~|\(rsE[3;5~|\(rsE[3;3~
+.TE
+.TP
+.B TERMINFO FOR SHIFTED KEYS
+The terminfo database has entries for shifted motion keys.
+If you need to detect shift or even control and/or alt, consider
+the documented shift values as the basis for deriving control and
+alt keystroke values.
+.IP
+There are capnames for shifted-erase as well as some movement
+keys.

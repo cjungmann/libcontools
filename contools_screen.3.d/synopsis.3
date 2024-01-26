@@ -1,0 +1,50 @@
+.so fork.tmac
+.SH SYNPOSIS
+
+.BI "extern const char* " tis_scroll_forward\fR;\fP
+.sp 0
+.BI "extern const char* " tis_scroll_reverse\fR;\fP
+.sp
+
+.PP
+.B Setup Functions:
+.sp -1
+.IP
+.cdef_voidfunc get_terminfo_values
+.cdef_voidfunc tis_values_set bool
+.IP
+.cdef_voidfunc start_ca_mode
+.cdef_voidfunc stop_ca_mode
+.IP
+.cts_get_screen_size
+.cts_set_scroll_limits
+.cdef_voidfunc clear_scroll_limits
+.PP
+.B Screen Manipulation Functions:
+.sp -1
+.IP
+.cdef_voidfunc reset_screen
+.IP
+.cts_set_cursor_position
+.cts_get_cursor_position
+.IP
+.cdef_voidfunc hide_cursor
+.cdef_voidfunc show_cursor
+.cdef_voidfunc normal_cursor
+.PP
+.B Text Style Functions:
+.sp -1
+.IP
+.cdef_voidfunc set_bold_mode
+.cdef_voidfunc set_italic_mode
+.cdef_voidfunc set_reverse_mode
+.cdef_voidfunc set_normal_mode
+.IP
+.cdef_voidfunc start_standout_mode
+.cdef_voidfunc stop_standout_mode
+.PP
+.B Keypad Mode Functions:
+.sp -1
+.IP
+.cdef_voidfunc start_keyboard_transmit_mode
+.cdef_voidfunc stop_keyboard_transmit_mode

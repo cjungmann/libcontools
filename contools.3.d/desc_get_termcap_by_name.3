@@ -1,0 +1,21 @@
+.so fork.tmac
+.SS GET_TERMCAP_BY_NAME
+.PP
+This function searches for termcap strings by
+.BR capname .
+.IP
+.ct_get_termcap_by_name
+.TP
+.I value
+is a pointer to a pointer to which the termcap value, if found, will
+be returned.
+.TP
+.I capname
+is a termcap name for which to search.
+.TP
+.B RETURN VALUE
+is
+.B true
+if found or
+.B false
+if not found.

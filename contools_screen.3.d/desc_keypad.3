@@ -1,0 +1,40 @@
+.so fork.tmac
+.SS KEYPAD FUNCTIONS
+.PP
+The number pad on a standard keyboard and the arrow keys on a laptop
+have two reporting or transmit modes.
+Use one or the other of these functions to ensure predictable
+keystroke strings from
+.B get_keystroke
+so you can respond appropriately.
+.PP
+.cdef_voidfunc start_keyboard_transmit_mode
+.cdef_voidfunc stop_keyboard_transmit_mode
+.sp -1
+.IP
+As an example, in
+.BR keyboard_transmit_mode ,
+the END key transmits
+.RB \(lq \(rsE[F \(rq
+but in non-transmit mode, it is
+.RB \(lq \(rsE0F \(rq.
+.IP
+.B CONFIRM THIS!
+.TS
+tab(|);
+l l l lx.
+code|name|description|value
+_
+ks|smkx|start transmit mode|\(rsE[?1h\(rsE=
+ke|rmkx|stop transmit mode|\(rsE[?1l\(rsE>
+.TE
+
+.TS
+tab(|);
+l l lx.
+DECCKM|\(rsE [ ? 1 h|cursor keys prefix \(rsE 0
+DECPAM|\(rsE =|application keypad mode
+_
+DECCKM|\(rsE [ ? 1 l|cursor keys prefix \(rsE [
+DECPNM|\(rsE >|numeric keypad mode
+.TE

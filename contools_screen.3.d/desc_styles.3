@@ -1,0 +1,32 @@
+.so fork.tmac
+.SS TEXT STYLING
+.PP
+This set of functions affect how subsequent characters look.
+.PP
+.cdef_voidfunc set_bold_mode
+.cdef_voidfunc set_italic_mode
+.cdef_voidfunc set_reverse_mode
+.cdef_voidfunc set_normal_mode
+.sp -1
+.IP
+The
+.BR bold ", " italic ", and " reverse
+modes do not have a corresponding command for undoing
+the style.
+They are all reversed together with the
+.B set_normal_mode
+function.
+.PP
+.cdef_voidfunc start_standout_mode
+.cdef_voidfunc stop_standout_mode
+.sp -1
+.IP
+Standout mode is grouped separately from the other style modes
+because it is not invocable by
+.B groff-generated
+documents, but may be used by
+.B less
+or other programs to distinguish instructions or other meta
+information.
+
+

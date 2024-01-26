@@ -1,0 +1,51 @@
+.so fork.tmac
+.SS SCREEN MANIPULATION
+.PP
+This series of functions make temporary adjustments to the screen
+environment.
+.PP
+.cdef_voidfunc reset_screen
+.sp -1
+.IP
+Simple function that erases the screen and sets the cursor to the
+top left position.
+.PP
+.cdef_voidfunc set_cursor_position
+.cdef_voidfunc get_cursor_position
+.sp -1
+.IP
+Set the cursor position to paint specific areas of the screen.
+On rare occasions, a program may also need to know where the cursor
+is, too.
+.PP
+.cdef_voidfunc hide_cursor
+.cdef_voidfunc show_cursor
+.cdef_voidfunc normal_cursor
+.sp -1
+.IP
+Hide the cursor to avoid the distraction of the cursor flashing
+around when paintint the screen with text.
+.B show_cursor
+makes the cursor extra-bright if it is helpful to call attention to
+the cursor.
+Use
+.B normal_cursor
+to restore the cursor to the default brightness after having entered
+either the
+.BR hide_cursor " or " show_cursor
+mode.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

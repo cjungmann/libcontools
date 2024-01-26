@@ -1,0 +1,42 @@
+.de ct_launch_terminal
+.  cdef_voidfunc launch_terminal bool
+..
+.de ct_get_keystroke
+.  cdef_start "const\ char\ *" "get_keystroke"
+.  cdef_arg "char\ *" buff
+.  cdef_arg int bufflen last
+.  cdef_end
+..
+.de ct_transform_keystroke
+.  cdef_start "const\ char\ *" "transform_keystroke"
+.  cdef_arg "char\ *" buff
+.  cdef_arg int bufflen
+.  cdef_arg "const\ char\ *" keystroke
+.  cdef_arg "const\ char\ *" esc_str last
+.  cdef_end
+..
+.de ct_transform_keystring
+.  cdef_start "const\ char\ *" "transform_keystring"
+.  cdef_arg "char\ *" buff
+.  cdef_arg int bufflen
+.  cdef_arg "const\ char\ *" keystring
+.  cdef_arg "const\ char\ *" esc_str last
+.  cdef_end
+..
+.de ct_capname_from_code
+.  cdef_start "const\ char\ *" capname_from_code
+.  cdef_arg "const\ char\ *" capcode last
+.  cdef_end
+..
+.de ct_get_termcap_by_name
+.  cdef_start bool get_termcap_by_name
+.  cdef_arg "const\ char\ **" value
+.  cdef_arg "const\ char\ *" capname last
+.  cdef_end
+..
+.de ct_get_termcap_by_code
+.  cdef_start bool get_termcap_by_code
+.  cdef_arg "const\ char\ **" value
+.  cdef_arg "const\ char\ *" capcode last
+.  cdef_end
+..

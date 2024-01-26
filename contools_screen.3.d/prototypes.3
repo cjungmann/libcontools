@@ -1,0 +1,24 @@
+.de cts_set_scroll_limits
+.  cdef_start void set_scroll_limits
+.  cdef_arg int top
+.  cdef_arg int bottom last
+.  cdef_end
+..
+.de cts_set_cursor_position
+.  cdef_start void set_cursor_position
+.  cdef_arg int row
+.  cdef_arg int col last
+.  cdef_end
+..
+.de cts_get_cursor_position
+.  cdef_start void get_cursor_position
+.  cdef_arg "int\ *" row
+.  cdef_arg "int\ *" col last
+.  cdef_end
+..
+.de cts_get_screen_size
+.  cdef_start void get_screen_size
+.  cdef_arg "int\ *" rows
+.  cdef_arg "int\ *" cols last
+.  cdef_end
+..

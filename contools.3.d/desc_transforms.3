@@ -1,0 +1,89 @@
+.so fork.tmac
+.SS TRANSFORM FUNCTIONS
+.PP
+Console control strings and many keystroke strings for unprintable
+keys begin with an ESC character that makes viewing the string
+value difficult.  These two functions transform strings between
+a printable and raw form for convenience in debugging.
+.IP
+.ct_transform_keystroke
+.IP
+.ct_transform_keystring
+.PP
+.B transform_keystroke
+will replace raw ESC characters in parameter
+.I keystroke
+with
+.IR esc_str .
+.B transform_keystring
+will replace substrings in parameter
+.I keystring
+that match
+.I esc_str
+with a raw ESC character.
+.PP
+The other parameters are:
+.TP
+.I buff
+is the buffer to which the transformation will be written.
+.TP
+.I bufflen
+is the length in chars of the
+.I buff
+variable.
+.TP
+.IR keystring / keystroke
+the string to be converted
+.TP
+.I esc_str
+if not NULL, this string that will be substituted for the ESC
+character instead of the default control character conversion
+(see below).
+.TP
+.B CONTROL CHARACTER CONVERSION
+Any character whose integer value is below 32 (the SPACE character)
+is called a
+.IR "control character" .
+Control characters in the string will be replaced with a
+two-character substring consisting of a caret
+.RB \(lq ^ \(rq
+followed the ASCII character whose integer value is 64 greater than
+the control character.
+For example, a newline is decimal 10, 10 + 64 is 74.
+The ASCII character for 74 is
+.RB \(lq J \(rq,
+so a newline control character will be converted to
+.RB \(lq ^J \(rq.
+.IP
+If the
+.I esc_str
+parameter is set to NULL, ESC characters will be handled like other
+control characters.
+The integer value of the ESC character is 27, to which 64 will be
+added to get 91, resulting in an ESC character representation of
+.RB \(lq ^[ \(rq.
+.TP
+.B TRANSFORM_KEYSTRING CAUTION
+.PP
+For substrings that begin with
+.RB \(lq ^ \(rq,
+only those that might be control characters are converted to
+control characters (@, A-Z, [, \(rs, ], ^, and _).  Carets before
+other characters are left as-is.
+.PP
+If you need a string literal that would but should not be converted
+to a control character, put a space after the caret, then an
+.RB \(lq ^H \(rq
+backspace, then the next letter.
+For example, to make a literal
+.RB \(lq ^[ \(rq
+that won't be convered to ESC,
+put a space after the caret, then
+.RB \(lq ^H \(rq
+(backspace), then the
+.RB \(lq [ \(rq:
+.IP
+.EX
+.RB \(dq "Literal ^ ^H[" \(dq
+.EE
+

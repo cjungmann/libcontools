@@ -1,0 +1,45 @@
+.so fork.tmac
+.SS SETUP FUNCTIONS
+.PP
+This set of functions help prepare a console to run a new TUI
+(text user interface) application.
+.PP
+.cdef_voidfunc get_terminfo_values
+.cdef_voidfunc tis_values_set bool
+.sp -1
+.IP
+These functions pertain to the ability to query the terminfo database
+for useful termcap values.
+.B get_terminfo_values
+initializes the terminfo environment, enabling termcap queries, and
+.B tis_values_set
+is simply a test to confirm that
+.B get_terminfo_values
+has been called.
+.PP
+.cdef_voidfunc start_ca_mode
+.cdef_voidfunc stop_ca_mode
+.sp -1
+.IP
+The explanation is obscure, but note that the
+.B capname
+string for cursor addressing is
+.RB \(lq cup \(rq.
+The termcap strings associated with
+.BR start_ca_mode " and " stop_ca_mode
+consist of several escape sequences that preserve the terminal
+settings when entering
+.I cup mode
+and restore the settings when leaving
+.IR "cup mode" .
+It's a good practice to use these functions, it makes for a better
+user experience.
+.PP
+.cts_get_screen_size
+.cts_set_scroll_limits
+.sp -1
+.IP
+The task of setting up a scrolling area is generally done once at the
+beginning of a program (unless you're responding to screen-resize
+messages), and is related to the screen size for the bottom scroll
+limit.

@@ -1,0 +1,13 @@
+.so fork.tmac
+.SS CAPNAME_FROM_CODE
+.PP
+Returns the capname string associated with a two-character capcode.
+.IP
+.ct_capname_from_code
+.TP
+.I capcode
+a two-character code for which the capname is desired.
+.TP
+.B RETURN VALUE
+will be a capname string if found, or NULL if there is no capname for
+the given capcode.

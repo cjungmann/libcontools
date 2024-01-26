@@ -1,0 +1,31 @@
+.so fork.tmac
+.SS GET_KEYSTROKE
+.PP
+Read a single keystroke from the user without waiting for an ENTER
+key press.  Returns the keystroke string value.
+.IP
+.ct_get_keystroke
+.TP
+.I buff
+is an optional buffer to which the user's keystrokes will be written.
+If this parameter is
+.IR NULL ,
+.B get_keystroke
+will use a static buffer to return the keystroke string.
+.TP
+.I bufflen
+is the length of char buffer
+.IR buff ", if " buff
+is provided.
+.PP
+This function returns an individual keystroke, which will be a string
+of characters starting with an ESC if the user stikes a navigation
+or function key.
+.PP
+Typically, this function will be called with
+.IR NULL " and " 0
+values to use the internal buffer.
+However, if a keystroke value must be saved while another keystroke
+is obtained, provide buffers and their lengths to
+.B get_keystroke
+to manage the information lifetime.

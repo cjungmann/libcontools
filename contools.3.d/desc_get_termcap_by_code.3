@@ -1,0 +1,47 @@
+.so fork.tmac
+.SS GET_TERMCAP_BY_CODE
+.PP
+This function returns a control string for a given two-character
+capcode.
+.IP
+.ct_get_termcap_by_code
+.TP
+.I value
+is a pointer to a pointer to which the termcap value, if found, will
+be returned.
+.TP
+.I capcode
+is a two-character code for which to search.
+.TP
+.B RETURN VALUE
+is
+.B true
+if found or
+.B false
+if not found.
+.PP
+Following the convention established by the
+.B less
+command, it first checks the environment for overrides defined
+with a variable name derived from a prefix of
+.B LESS_TERMCAP_
+followed by the two-character code.
+If there is no LESS_TERMCAP_ environment variable, it will return
+the associated termcap string from the terminfo database (see
+.BR terminfo (5)).
+.PP
+If an application prefers not to leave the definition to the user,
+convert the capcode to a capname using the
+.B capname_from_code
+function, then using
+.BR get_termcap_by_name :
+.IP
+.EX
+const char *capval;
+if (get_termcap_by_name(&capval, capname_from_code(code)))
+   do_something(capval);
+.EE
+
+
+
+
