@@ -1,4 +1,4 @@
-#ifndef SCREEN_H
+ #ifndef SCREEN_H
 #define SCREEN_H
 
 extern const char* tis_scroll_forward;
@@ -19,6 +19,9 @@ void set_normal_mode(void);
 
 void start_standout_mode(void);
 void stop_standout_mode(void);
+
+void start_autowrap_mode(void);
+void stop_autowrap_mode(void);
 
 void hide_cursor(void);
 void show_cursor(void);

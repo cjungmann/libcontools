@@ -21,6 +21,9 @@ const char* tis_normal_mode = NULL;
 const char* tis_enter_standout_mode = NULL;
 const char* tis_exit_standout_mode = NULL;
 
+const char *tis_enter_autowrap_mode = NULL;
+const char *tis_exit_autowrap_mode = NULL;
+
 const char* tis_enter_ca_mode = NULL;
 const char* tis_exit_ca_mode = NULL;
 
@@ -74,6 +77,9 @@ void get_terminfo_values(void)
       {&tis_hide_cursor, "vi"},
       {&tis_show_cursor, "vs"},
       {&tis_normal_cursor, "ve"},
+
+      {&tis_enter_autowrap_mode,"SA"},
+      {&tis_exit_autowrap_mode,"RA"},
 
       {&tis_enter_keyboard_transmit_mode, "ks"},
       {&tis_exit_keyboard_transmit_mode, "ke"},
@@ -153,6 +159,18 @@ EXPORT void stop_standout_mode(void)
 {
    assert(tis_values_set());
    screen_write_str(tis_exit_standout_mode, STDOUT_FILENO);
+}
+
+EXPORT void start_autowrap_mode(void)
+{
+   assert(tis_values_set());
+   screen_write_str(tis_enter_autowrap_mode, STDOUT_FILENO);
+}
+
+EXPORT void stop_autowrap_mode(void)
+{
+   assert(tis_values_set());
+   screen_write_str(tis_exit_autowrap_mode, STDOUT_FILENO);
 }
 
 EXPORT void hide_cursor(void)
