@@ -34,10 +34,56 @@ TEST_MODULES = $(addsuffix .o,$(filter ./test_%,$(basename $(wildcard $(SRC)/*.c
 # Libraries need header files.  Set the following accordingly:
 HEADERS = $(TARGET_ROOT).h
 
-# Declare non-filename targets
-.PHONY: all preview install uninstall clean help
+define prereq_check_setup =
+	@echo "Pre-compile dependencies test"
+	@rm -f PREREQ_CHECK.REPORT
+endef
 
-all: ${TARGET_SHARED} ${TARGET_STATIC}
+define prereq_check_library =
+	@echo "Checking for $(1) library"
+	@/sbin/ldconfig -p | grep -o ^[[:space:]]*lib$(1).so >/dev/null; \
+		echo "$$?" > PREREQ_CHECK_LIBRARY.RESULT
+	@if grep -v 0 PREREQ_CHECK_LIBRARY.RESULT > /dev/null; then              \
+		printf '- Missing library \e[32;1m%s\e[m (\e[32;1m%s\e[m)\n' \
+			$(1) $(2) >> PREREQ_CHECK.REPORT; \
+	fi
+	@rm -f PREREQ_CHECK_LIBRARY.RESULT
+endef
+
+define prereq_check_header =
+	@echo "Checking include path for header $(1)"
+	@echo "#include <$(1)>" > PREREQ_CHECK_DUMMY.h
+	@-$(CC) -fsyntax-only PREREQ_CHECK_DUMMY.h 1>&2 2>/dev/null; \
+		echo "$$?" > PREREQ_CHECK_HEADER.RESULT
+	@if grep -v 0 PREREQ_CHECK_HEADER.RESULT > /dev/null; then          \
+		printf ' - Missing header \e[32;1m%s\e[m; install \e[32;1m%s\e[m.\n' \
+			$(1) $(2) >> PREREQ_CHECK.REPORT; \
+	fi
+	@rm -f PREREQ_CHECK_DUMMY.h PREREQ_CHECK_HEADER.RESULT
+endef
+
+define prereq_check_report =
+	@if [ -f PREREQ_CHECK.REPORT ] && \
+			[ $$( stat -c%s PREREQ_CHECK.REPORT ) -ne 0 ]; then \
+		echo ; \
+		echo "Predicting compile failure due to missing installations:" ; \
+		cat PREREQ_CHECK.REPORT; \
+		rm -f PREREQ_CHECK.REPORT;  \
+		exit 1;                  \
+	fi
+	@rm -f PREREQ_CHECK.REPORT
+endef
+
+# Declare non-filename targets
+.PHONY: all preview install uninstall clean help depends
+
+all: depends ${TARGET_SHARED} ${TARGET_STATIC}
+
+depends:
+	$(call prereq_check_setup)
+	$(call prereq_check_library,ncurses,na)
+	$(call prereq_check_header,ncurses.h,libncurses5-dev)
+	$(call prereq_check_report)
 
 preview:
 	@echo Beginning build of ${TARGET_ROOT} libraries.
