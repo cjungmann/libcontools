@@ -164,19 +164,30 @@ EXPORT const char *transform_keystring(char *buff,
  */
 EXPORT const char* get_keystroke(char *buff, int bufflen)
 {
-   static char simple_buff[48];
+   // Put unchanging values in static variables,
+   static int filehandle = STDIN_FILENO;
 
+   static struct termios original, raw;
+   static bool termios_saved = 0;
+
+   // Set termios stuff only once
+   if (!termios_saved)
+   {
+      tcgetattr(filehandle, &original);
+      raw = original;
+      set_rawread_mode(&raw);
+
+      termios_saved = 1;
+   }
+
+   // Use local static buffer if no buffer provided:
+   static char simple_buff[48];
    if (buff == NULL)
    {
       buff = simple_buff;
       bufflen = sizeof(simple_buff);
    }
 
-   int filehandle = STDIN_FILENO;
-   struct termios original, raw;
-   tcgetattr(filehandle, &original);
-   raw = original;
-   set_rawread_mode(&raw);
    tcsetattr(filehandle, TCSANOW, &raw);
 
    start_keyboard_transmit_mode();
